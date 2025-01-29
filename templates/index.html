@@ -1,0 +1,57 @@
+<!-- This header tells the browser what type of HTML is being used-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Things in this header tag are for processing the web page and shouldn't be rendered-->
+        <meta charset="UTF-8">
+        <!-- This tag is for making the wbesite more user friendly on 
+         other devices, like smaller mobile phones-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+        <title>Anagram Solver</title>
+    </head>
+    <body>
+        <main>
+             <!-- Main header-->
+        <h1 style="text-align: center;">Anagram Solver</h1>
+        <form method="POST">
+            <!-- Get user input-->
+             <div class="input-group">
+                <label for="word">Enter scrambled word:</label>
+                <input style="width: 200px; height: 40px" type="text" id ="word" name="word" required><br>
+             </div>
+             <div class ="options">
+                <button class="user-button" type="submit">Generate Solutions!</button>
+             <!-- Incluing proper names-->
+              <div>
+                <label for="include_proper_names">
+                    <input type="checkbox" id="include_proper_names" name="include_proper_names">
+                    Include names?
+                </label>
+              </div>
+             </div>
+        </form>
+        <!-- Jinja2 template for handling user input. Below checks if
+         the anagrams variable passed via Flask route has a truthy value.
+         In this case, it will execute if anagrams is a nonempty list-->
+        {% if anagrams %}
+            <div class="output-group">
+                <h2>We found:</h2>
+                <ul>
+                    <!-- Bulleted list-->
+                    {% for anagram in anagrams %}
+                        <!-- <li> to list elements of list-->
+                        <li class="anagram-li">
+                            <a href="https://www.google.com/search?q={{ anagram }}" target="_blank">
+                                {{ anagram }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% elif anagrams is not none %}
+            <p>No anagrams were found.</p>
+        {% endif %}
+        </main>   
+    </body>
+</html>
